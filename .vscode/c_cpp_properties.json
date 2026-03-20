@@ -1,0 +1,20 @@
+{
+    "configurations": [
+        {
+            "name": "Mac",
+            "includePath": [
+                "${workspaceFolder}/**",
+                "${workspaceFolder}/.pio/libdeps/esp32-s3-devkitc-1/**",
+                "${env:HOME}/.platformio/packages/toolchain-xtensa-esp32s3/**",
+                "${env:HOME}/.platformio/packages/framework-arduinoespressif32/**",
+                "${env:HOME}/.platformio/packages/**"
+            ],
+            "defines": [],
+            "compilerPath": "/Users/gabrielferrer/.platformio/packages/toolchain-xtensa-esp32s3/bin/xtensa-esp32s3-elf-gcc",
+            "cStandard": "c17",
+            "cppStandard": "gnu++14",
+            "intelliSenseMode": "macos-gcc-x86"
+        }
+    ],
+    "version": 4
+}

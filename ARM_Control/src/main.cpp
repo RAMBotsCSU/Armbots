@@ -1,12 +1,21 @@
 #include <Arduino.h>
+#include <ESP32Servo.h>   // ← Only this one. Remove #include <Servo.h>
+
+// Forward declarations — tells compiler these functions exist before they're defined
+int readPotAngle();
+void setServoAngle(int angle);
+
 // PWM Pins
 int step_one = 1;
-int dir_1 = 2;
+int dir_1    = 2;
 int enable_L = 4;
-int dir_2 = 5;
-int ms1_M2 = 9;
-int ms2_M2 = 10;
-
+int dir_2    = 5;
+int ms1_M2   = 9;
+int ms2_M2   = 10;
+int ms3_M2   = 11;
+int ms1_M1   = 15;
+int ms2_M1   = 16;
+int ms3_M1   = 17;
 
 // put function declarations here:
 int myFunction(int, int);
