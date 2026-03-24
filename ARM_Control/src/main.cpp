@@ -1,35 +1,60 @@
 #include <Arduino.h>
-#include <ESP32Servo.h>   // ← Only this one. Remove #include <Servo.h>
+#include <WiFi.h>
+#include <WebServer.h>
+#include "config.h"
+#include "ServoMotor.h"
+#include "StepperMotor.h"
 
-// Forward declarations — tells compiler these functions exist before they're defined
-int readPotAngle();
-void setServoAngle(int angle);
+// ─── Motors ───────────────────────────────────────────────────────────────────
+//                           pin                  min µs                 max µs
+ServoMotor elbowServo   (SERVO_ELBOW_PIN,    SERVO_STANDARD_MIN_US, SERVO_STANDARD_MAX_US);
+ServoMotor shoulderServo(SERVO_SHOULDER_PIN, DOCKYE_MIN_US,         DOCKYE_MAX_US);
+ServoMotor wristServo   (SERVO_WRIST_PIN,    SERVO_STANDARD_MIN_US, SERVO_STANDARD_MAX_US);
 
-// PWM Pins
-int step_one = 1;
-int dir_1    = 2;
-int enable_L = 4;
-int dir_2    = 5;
-int ms1_M2   = 9;
-int ms2_M2   = 10;
-int ms3_M2   = 11;
-int ms1_M1   = 15;
-int ms2_M1   = 16;
-int ms3_M1   = 17;
+//                            enable              step              dir             MS1            MS2            MS3
+StepperMotor baseStepper   (BASE_ENABLE_PIN,    BASE_STEP_PIN,    BASE_DIR_PIN,    BASE_MS1_PIN,    BASE_MS2_PIN,    BASE_MS3_PIN);
+StepperMotor gripperStepper(GRIPPER_ENABLE_PIN, GRIPPER_STEP_PIN, GRIPPER_DIR_PIN, GRIPPER_MS1_PIN, GRIPPER_MS2_PIN, GRIPPER_MS3_PIN);
 
-// put function declarations here:
-int myFunction(int, int);
+// ─── Web Server ───────────────────────────────────────────────────────────────
+WebServer server(80);
+
+void handleRoot() {
+    server.send(200, "text/plain", "ArmBot online. Web UI coming soon.");
+}
 
 void setup() {
-  // put your setup code here, to run once:
-  int result = myFunction(2, 3);
+    Serial.begin(115200);
+    Serial.println("\n─── ArmBot Booting ───────────────────────────────");
+
+    // ── Init Motors ──────────────────────────────────────────────────────────
+    Serial.println("[Motors] Initializing servos...");
+    elbowServo.begin();
+    shoulderServo.begin();
+    wristServo.begin();
+
+    Serial.println("[Motors] Initializing steppers...");
+    baseStepper.begin();
+    gripperStepper.begin();
+
+    // ── Start WiFi AP ────────────────────────────────────────────────────────
+    Serial.println("[WiFi] Starting Access Point...");
+    WiFi.softAP(WIFI_SSID, WIFI_PASSWORD);
+    Serial.printf("[WiFi] SSID: %s\n", WIFI_SSID);
+    Serial.printf("[WiFi] IP:   http://%s\n", WiFi.softAPIP().toString().c_str());
+
+    // ── Register Routes ──────────────────────────────────────────────────────
+    server.on("/", handleRoot);
+    server.begin();
+
+    Serial.println("[Server] Running.");
+    Serial.println("─────────────────────────────────────────────────\n");
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
-}
+    // Handle any incoming web requests
+    server.handleClient();
 
-// put function definitions here:
-int myFunction(int x, int y) {
-  return x + y;
+    // Steppers MUST be called every loop — they move one step at a time
+    baseStepper.run();
+    gripperStepper.run();
 }
