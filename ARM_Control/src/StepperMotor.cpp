@@ -43,10 +43,10 @@ void StepperMotor::stop() {
     _stepper.stop();
 }
 
-long StepperMotor::getPosition() const {
+long StepperMotor::getPosition() {
     return _stepper.currentPosition();
 }
 
-bool StepperMotor::isRunning() const {
+bool StepperMotor::isRunning() {
     return _stepper.isRunning();
 }

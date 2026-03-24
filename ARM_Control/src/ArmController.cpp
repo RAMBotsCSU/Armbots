@@ -55,5 +55,5 @@ void ArmController::stopGripper()         { _gripper.stop();      }
 int  ArmController::getElbow()      const { return _elbow.getAngle();       }
 int  ArmController::getShoulder()   const { return _shoulder.getAngle();    }
 int  ArmController::getWrist()      const { return _wrist.getAngle();       }
-long ArmController::getBasePos()    const { return _base.getPosition();     }
-long ArmController::getGripperPos() const { return _gripper.getPosition();  }
+long ArmController::getBasePos()    { return _base.getPosition();     }
+long ArmController::getGripperPos() { return _gripper.getPosition();  }

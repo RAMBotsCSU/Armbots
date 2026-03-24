@@ -40,8 +40,8 @@ public:
     int  getElbow()      const;
     int  getShoulder()   const;
     int  getWrist()      const;
-    long getBasePos()    const;
-    long getGripperPos() const;
+    long getBasePos();
+    long getGripperPos();
 
 private:
     StandardServo _elbow;

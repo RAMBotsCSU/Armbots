@@ -23,8 +23,8 @@ public:
     void moveTo(long position); // set target position (steps from home)
     void run();                 // MUST be called every loop() — executes steps
     void stop();                // halt immediately
-    long getPosition() const;   // current position in steps
-    bool isRunning() const;     // true if still moving toward target
+    long getPosition();   // current position in steps
+    bool isRunning();     // true if still moving toward target
 
 private:
     AccelStepper _stepper;
