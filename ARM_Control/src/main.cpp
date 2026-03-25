@@ -87,7 +87,7 @@ void setup() {
     Serial.println("[Server] Running.");
     Serial.println("─────────────────────────────────────────────────\n");
 }
-
+    
 void loop() {
     ws.cleanupClients();
     arm.run();
