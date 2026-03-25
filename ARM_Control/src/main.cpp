@@ -21,6 +21,7 @@ void onWebSocketEvent(AsyncWebSocket *server, AsyncWebSocketClient *client,
         case WS_EVT_DISCONNECT:
             Serial.printf("[WS] Client #%u disconnected\n", client->id());
             break;
+            //Receives user input from the UI
         case WS_EVT_DATA: {
             String msg = String((char*)data).substring(0, len);
             Serial.printf("[WS] Received: %s\n", msg.c_str());
