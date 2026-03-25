@@ -29,5 +29,5 @@ private:
     int   _currentAngle;
 
     static const int MIN_US = 500;
-    static const int MAX_US = 2500;
+    static const int MAX_US = 2500/1.7;
 };
