@@ -3,6 +3,7 @@
 #include <ESPAsyncWebServer.h>
 #include "config.h"
 #include "ArmController.h"
+#include "ui.h"
 
 // ─── Arm ──────────────────────────────────────────────────────────────────────
 ArmController arm;
@@ -21,9 +22,24 @@ void onWebSocketEvent(AsyncWebSocket *server, AsyncWebSocketClient *client,
             Serial.printf("[WS] Client #%u disconnected\n", client->id());
             break;
         case WS_EVT_DATA: {
-            // Command parsing added in Phase 6 (web UI)
             String msg = String((char*)data).substring(0, len);
             Serial.printf("[WS] Received: %s\n", msg.c_str());
+
+            int spaceIdx = msg.indexOf(' ');
+            String joint = (spaceIdx > 0) ? msg.substring(0, spaceIdx) : msg;
+            int value    = (spaceIdx > 0) ? msg.substring(spaceIdx + 1).toInt() : 0;
+            joint.toLowerCase();
+
+            if      (joint == "elbow")    arm.setElbow(value);
+            else if (joint == "shoulder") arm.setShoulder(value);
+            else if (joint == "wrist")    arm.setWrist(value);
+            else if (joint == "base")     arm.moveBase(value);
+            else if (joint == "gripper")  arm.moveGripper(value);
+            else if (joint == "home")     {
+                arm.home();
+                ws.textAll("reset");
+            }
+            else Serial.println("[WS] Unknown command.");
             break;
         }
         default:
@@ -80,7 +96,8 @@ void setup() {
     ws.onEvent(onWebSocketEvent);
     server.addHandler(&ws);
     server.on("/", HTTP_GET, [](AsyncWebServerRequest *req) {
-        req->send(200, "text/plain", "ArmBot online. Web UI coming soon.");
+        //req->send(200, "text/plain", "ArmBot online. Web UI coming soon.");
+        req->send_P(200, "text/html", INDEX_HTML);
     });
     server.begin();
 
