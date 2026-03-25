@@ -8,26 +8,31 @@
 //   Never use write() or writeDegrees() — the angle mapping is inaccurate
 //   for this model and will cause wrong positions.
 //
-// Pulse range: 500–2500µs = 0–180°
+// Speed is controlled by setting a target angle — the servo moves toward it
+// at a fixed speed (degrees/sec) instead of jumping instantly.
 //
-// Usage:
-//   DockyeServo shoulder(38);
-//   shoulder.begin();
-//   shoulder.setAngle(90);
+// ⚠ call update() every loop() — without it the servo won't move smoothly.
+//
+// Pulse range: 500–2500µs = 0–180°
 
 class DockyeServo {
 public:
     DockyeServo(int pin);
 
-    void begin();             // attach and move to 0°
-    void setAngle(int angle); // move to angle (0–180°) via pulse width only
-    int  getAngle() const;    // return last commanded angle
+    void begin();
+    void setAngle(int targetAngle);        // set target — moves at current speed
+    void setSpeed(float degreesPerSec);    // how fast to move (default: 90°/sec)
+    void update();                         // MUST be called every loop()
+    int  getAngle() const;                 // current physical angle
 
 private:
-    Servo _servo;
-    int   _pin;
-    int   _currentAngle;
+    Servo         _servo;
+    int           _pin;
+    float         _currentAngle;
+    int           _targetAngle;
+    float         _speed;
+    unsigned long _lastUpdate;
 
     static const int MIN_US = 500;
-    static const int MAX_US = 2500/1.7;
+    static const int MAX_US = 2500;
 };

@@ -26,6 +26,11 @@ void ArmController::begin() {
 }
 
 void ArmController::run() {
+    // Servos interpolate toward their target angle each loop()
+    _elbow.update();
+    _shoulder.update();
+    _wrist.update();
+
     // Steppers move one step at a time — must be called every loop()
     _base.run();
     _gripper.run();
@@ -44,6 +49,10 @@ void ArmController::home() {
 void ArmController::setElbow   (int angle) { _elbow.setAngle(angle);    }
 void ArmController::setShoulder(int angle) { _shoulder.setAngle(angle); }
 void ArmController::setWrist   (int angle) { _wrist.setAngle(angle);    }
+
+void ArmController::setElbowSpeed   (float d) { _elbow.setSpeed(d);    }
+void ArmController::setShoulderSpeed(float d) { _shoulder.setSpeed(d); }
+void ArmController::setWristSpeed   (float d) { _wrist.setSpeed(d);    }
 
 // ── Stepper joints ────────────────────────────────────────────────────────────
 void ArmController::moveBase   (long pos) { _base.moveTo(pos);    }

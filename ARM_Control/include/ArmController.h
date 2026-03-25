@@ -26,9 +26,13 @@ public:
     void home();   // return all joints to zero position
 
     // ── Servo joints ────────────────────────────────────────────────────────
-    void setElbow   (int angle);   // 0–180°
-    void setShoulder(int angle);   // 0–180°  (Dockye servo)
-    void setWrist   (int angle);   // 0–180°
+    void setElbow   (int angle);              // 0–180°
+    void setShoulder(int angle);              // 0–180°  (Dockye servo)
+    void setWrist   (int angle);              // 0–180°
+
+    void setElbowSpeed   (float degsPerSec); // how fast elbow moves
+    void setShoulderSpeed(float degsPerSec); // how fast shoulder moves
+    void setWristSpeed   (float degsPerSec); // how fast wrist moves
 
     // ── Stepper joints ───────────────────────────────────────────────────────
     void moveBase   (long position); // absolute step position
