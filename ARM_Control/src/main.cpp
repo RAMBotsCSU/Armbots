@@ -98,7 +98,7 @@ void setup() {
     server.addHandler(&ws);
     server.on("/", HTTP_GET, [](AsyncWebServerRequest *req) {
         //req->send(200, "text/plain", "ArmBot online. Web UI coming soon.");
-        req->send_P(200, "text/html", INDEX_HTML);
+        req->send(200, "text/html", INDEX_HTML);
     });
     server.begin();
 
