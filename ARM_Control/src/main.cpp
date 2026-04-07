@@ -85,7 +85,9 @@ void handleSerial() {
 
 void setup() {
     Serial.begin(115200);
+    while (!Serial) delay(10);
     Serial.println("\n─── ArmBot Booting ───────────────────────────────");
+    
 
     arm.begin();
 
