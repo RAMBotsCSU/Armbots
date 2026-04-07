@@ -13,6 +13,7 @@ ArmController::ArmController()
 {}
 
 void ArmController::begin() {
+    
     Serial.println("[Arm] Initialising servos...");
     _elbow.begin();
     _shoulder.begin();
@@ -38,7 +39,7 @@ void ArmController::run() {
 
 void ArmController::home() {
     Serial.println("[Arm] Homing all joints...");
-    _elbow.setAngle(0);
+    _elbow.setAngle(15);
     _shoulder.setAngle(0);
     _wrist.setAngle(0);
     _base.moveTo(0);
