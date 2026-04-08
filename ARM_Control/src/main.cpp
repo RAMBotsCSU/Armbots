@@ -5,9 +5,11 @@
 #include "config.h"
 #include "ArmController.h"
 #include "ui.h"
+#include "BallGrabRoutine.h"  
 
 // ─── Arm ──────────────────────────────────────────────────────────────────────
 ArmController arm;
+BallGrabRoutine ballGrabRoutine(arm);
 
 // ─── Web Server + WebSocket ───────────────────────────────────────────────────
 AsyncWebServer server(80);
@@ -39,6 +41,7 @@ void onWebSocketEvent(AsyncWebSocket *server, AsyncWebSocketClient *client,
             else if (joint == "gripper")      { arm.moveGripper(value);          }
             else if (joint == "baseangle")    { arm.moveBaseToAngle(value);    }
             else if (joint == "gripperangle") { arm.moveGripperToAngle(value); }
+            else if (joint == "ballgrab") { ballGrabRoutine.run(); }
             else if (joint == "home")     {
                 arm.home();
                 ws.textAll("reset");
