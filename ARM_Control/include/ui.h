@@ -82,7 +82,7 @@ const char INDEX_HTML[] PROGMEM = R"rawliteral(
       <div class="slider-inner">
         <div class="slider-wrap">
           <input type="range" class="vertical" orient="vertical"
-                 min="22.5" max="180" value="0" step="1"
+                 min="22" max="180" value="22" step="1"
                  oninput="send('wrist ' + this.value); document.getElementById('wristVal').innerHTML = this.value + '&deg;'">
         </div>
         <div class="tick-col"><span>180&deg;</span><span>90&deg;</span><span>0&deg;</span></div>

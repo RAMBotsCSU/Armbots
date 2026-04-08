@@ -4,6 +4,12 @@
 #define WIFI_SSID     "ArmBot-Control"
 #define WIFI_PASSWORD "armbot123"
 
+// ─── OTA (Over The Air) Updates ──────────────────────────────────────────────
+// Required when uploading firmware over WiFi instead of USB.
+// In platformio.ini set: upload_protocol = espota
+//                        upload_port     = 192.168.4.1
+#define OTA_PASSWORD  "armbot-ota"
+
 // ─── Servo Pins ───────────────────────────────────────────────────────────────
 #define SERVO_ELBOW_PIN     48
 #define SERVO_SHOULDER_PIN  38
