@@ -48,8 +48,8 @@ public:
     int  getWrist()      const;
     long getBasePos();
     long getGripperPos();
-    float getBaseAngle()   ;          
-    float getGripperAngle() ;  
+    float getBaseAngle()   ;   // NEW       
+    float getGripperAngle() ;  // NEW
 
 private:
     StandardServo _elbow;
