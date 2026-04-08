@@ -64,7 +64,7 @@ void ArmController::moveGripper(long pos) { _gripper.moveTo(pos); }
 void ArmController::stopBase()            { _base.stop();         }
 void ArmController::stopGripper()         { _gripper.stop();      }
 
-// ── Stepper angle control ─────────────────────────────────────────────────────  
+// ── Stepper angle control (NEW) ─────────────────────────────────────────────────────  
 void  ArmController::moveBaseToAngle(float deg)    { _base.moveToAngle(deg);     }
 void  ArmController::moveGripperToAngle(float deg) { _gripper.moveToAngle(deg);  }
 
@@ -74,5 +74,5 @@ int  ArmController::getShoulder()   const { return _shoulder.getAngle();    }
 int  ArmController::getWrist()      const { return _wrist.getAngle();       }
 long ArmController::getBasePos()    { return _base.getPosition();     }
 long ArmController::getGripperPos() { return _gripper.getPosition();  }
-float ArmController::getBaseAngle()    { return _base.getAngle();     }  
+float ArmController::getBaseAngle()    { return _base.getAngle();     }  // These are new
 float ArmController::getGripperAngle() { return _gripper.getAngle();  }  
