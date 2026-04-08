@@ -34,8 +34,10 @@ void onWebSocketEvent(AsyncWebSocket *server, AsyncWebSocketClient *client,
             if      (joint == "elbow")    arm.setElbow(value);
             else if (joint == "shoulder") arm.setShoulder(value);
             else if (joint == "wrist")    arm.setWrist(value);
-            else if (joint == "base")     arm.moveBase(value);
-            else if (joint == "gripper")  arm.moveGripper(value);
+            else if (joint == "base")         { arm.moveBase(value);             }
+            else if (joint == "gripper")      { arm.moveGripper(value);          }
+            else if (joint == "baseangle")    { arm.moveBaseToAngle(value);    }
+            else if (joint == "gripperangle") { arm.moveGripperToAngle(value); }
             else if (joint == "home")     {
                 arm.home();
                 ws.textAll("reset");
@@ -77,6 +79,8 @@ void handleSerial() {
     else if (joint == "wrist")    { arm.setWrist(value);    }
     else if (joint == "base")     { arm.moveBase(value);    }
     else if (joint == "gripper")  { arm.moveGripper(value); }
+    else if (joint == "baseangle")    { arm.moveBaseToAngle(value);    }
+    else if (joint == "gripperangle") { arm.moveGripperToAngle(value); }
     else if (joint == "home")     { arm.home();             }
     else {
         Serial.println("[Serial] Unknown command. Try: elbow 90 | shoulder 45 | wrist 120 | base 500 | gripper 200 | home");

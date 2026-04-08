@@ -39,6 +39,8 @@ public:
     void moveGripper(long position); // absolute step position
     void stopBase();
     void stopGripper();
+    void  moveBaseToAngle(float deg);       
+    void  moveGripperToAngle(float deg);    
 
     // ── State getters ────────────────────────────────────────────────────────
     int  getElbow()      const;
@@ -46,6 +48,8 @@ public:
     int  getWrist()      const;
     long getBasePos();
     long getGripperPos();
+    float getBaseAngle()   ;          
+    float getGripperAngle() ;  
 
 private:
     StandardServo _elbow;

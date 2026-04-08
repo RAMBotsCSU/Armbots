@@ -25,9 +25,13 @@ public:
     void stop();                // halt immediately
     long getPosition();   // current position in steps
     bool isRunning();     // true if still moving toward target
+    void  moveToAngle(float degrees);   // move to absolute angle
+    float getAngle() ;            // current shaft angle in degrees       
 
 private:
     AccelStepper _stepper;
     int _enablePin;
     int _ms1Pin, _ms2Pin, _ms3Pin;
+    long  degreesToSteps(float degrees) const;
+    float stepsToDegrees(long steps)    const;
 };

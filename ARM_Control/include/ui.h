@@ -95,19 +95,19 @@ const char INDEX_HTML[] PROGMEM = R"rawliteral(
   <div class="stepper-row">
 
     <div class="stepper-joint">
-      <label>Base (steps)</label>
-      <div class="angle" id="baseVal">0</div>
-      <input type="range" class="horiz" min="-1000" max="1000" value="0" step="1"
-             oninput="send('base ' + this.value); document.getElementById('baseVal').innerHTML = this.value">
-      <div class="tick-row"><span>-1000</span><span>0</span><span>1000</span></div>
+      <label>Base</label>
+      <div class="angle" id="baseVal">0&deg;</div>
+      <input type="range" class="horiz" min="-180" max="180" value="0" step="1"
+              oninput="send('baseAngle ' + this.value); document.getElementById('baseVal').innerHTML = this.value + '&deg;'">
+      <div class="tick-row"><span>-180&deg;</span><span>0&deg;</span><span>180&deg;</span></div>
     </div>
 
     <div class="stepper-joint">
-      <label>Gripper (steps)</label>
-      <div class="angle" id="gripperVal">0</div>
-      <input type="range" class="horiz" min="0" max="500" value="0" step="1"
-             oninput="send('gripper ' + this.value); document.getElementById('gripperVal').innerHTML = this.value">
-      <div class="tick-row"><span>0</span><span>250</span><span>500</span></div>
+      <label>Gripper</label>
+      <div class="angle" id="gripperVal">0&deg;</div>
+      <input type="range" class="horiz" min="0" max="180" value="0" step="1"
+            oninput="send('gripperAngle ' + this.value); document.getElementById('gripperVal').innerHTML = this.value + '&deg;'">
+      <div class="tick-row"><span>0&deg;</span><span>90&deg;</span><span>180&deg;</span></div>
     </div>
 
   </div>
@@ -131,8 +131,8 @@ const char INDEX_HTML[] PROGMEM = R"rawliteral(
         document.querySelector('#elbowVal').innerHTML    = '15&deg;';
         document.querySelector('#shoulderVal').innerHTML = '0&deg;';
         document.querySelector('#wristVal').innerHTML    = '0&deg;';
-        document.querySelector('#baseVal').innerHTML     = '0';
-        document.querySelector('#gripperVal').innerHTML  = '0';
+        document.querySelector('#baseVal').innerHTML    = '0&deg;';
+        document.querySelector('#gripperVal').innerHTML = '0&deg;';
         const ranges = document.querySelectorAll('input[type=range]');
         ranges[0].value = 15;  // elbow — min is 15
         ranges[1].value = 0;
