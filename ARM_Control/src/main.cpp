@@ -1,6 +1,7 @@
 #include <Arduino.h>
 #include <WiFi.h>
 #include <ESPAsyncWebServer.h>
+#include <ArduinoOTA.h>
 #include "config.h"
 #include "ArmController.h"
 #include "ui.h"
@@ -92,7 +93,7 @@ void handleSerial() {
 
 void setup() {
     Serial.begin(115200);
-    while (!Serial) delay(10);
+    delay(500);  // brief settle time — do NOT wait for Serial or boot blocks without a monitor
     Serial.println("\n─── ArmBot Booting ───────────────────────────────");
     
 
@@ -106,16 +107,28 @@ void setup() {
     ws.onEvent(onWebSocketEvent);
     server.addHandler(&ws);
     server.on("/", HTTP_GET, [](AsyncWebServerRequest *req) {
-        //req->send(200, "text/plain", "ArmBot online. Web UI coming soon.");
         req->send(200, "text/html", INDEX_HTML);
     });
     server.begin();
-
     Serial.println("[Server] Running.");
+
+    // ── OTA (Over The Air) updates ────────────────────────────────────────────
+    // After the first USB flash, all future uploads can go over WiFi.
+    // In PlatformIO: set upload_protocol = espota and upload_port = 192.168.4.1
+    ArduinoOTA.setHostname("armbot");
+    ArduinoOTA.setPassword(OTA_PASSWORD);
+    ArduinoOTA.onStart([]()  { Serial.println("[OTA] Starting update..."); });
+    ArduinoOTA.onEnd([]()    { Serial.println("[OTA] Done. Rebooting.");   });
+    ArduinoOTA.onError([](ota_error_t e) {
+        Serial.printf("[OTA] Error(%u)\n", e);
+    });
+    ArduinoOTA.begin();
+    Serial.println("[OTA] Ready. Hostname: armbot");
     Serial.println("─────────────────────────────────────────────────\n");
 }
     
 void loop() {
+    ArduinoOTA.handle();  // must be called every loop() to listen for OTA uploads
     ws.cleanupClients();
     arm.run();
     handleSerial();
