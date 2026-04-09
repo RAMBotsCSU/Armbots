@@ -15,11 +15,11 @@ ArmController::ArmController()
 void ArmController::begin() {
     
     Serial.println("[Arm] Initialising servos...");
+    _wrist.begin();
     _elbow.begin();
-
     _shoulder.begin();
 
-    _wrist.begin();
+
 
 
     Serial.println("[Arm] Initialising steppers...");
