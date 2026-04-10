@@ -15,12 +15,12 @@ ArmController::ArmController()
 void ArmController::begin() {
     
     Serial.println("[Arm] Initialising servos...");
-    _wrist.begin();
     _elbow.begin();
+    delay(100);
+    _wrist.begin();
+    delay(100);
     _shoulder.begin();
-
-
-
+    delay(100);
 
     Serial.println("[Arm] Initialising steppers...");
     _base.begin();
