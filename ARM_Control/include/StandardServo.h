@@ -1,20 +1,22 @@
 #pragma once
-#include <ESP32Servo.h>
+#include <ESP32PWM.h>  // replaced ESP32Servo — direct LEDC control avoids channel conflicts on ESP32-S3
 
 // ─── StandardServo ────────────────────────────────────────────────────────────
-// For the Elbow and Wrist servos.
+// For the Elbow, Shoulder, and Wrist servos.
+//
+// ⚠ Previously used ESP32Servo which silently dropped the 3rd servo's PWM
+//   signal on ESP32-S3 due to LEDC channel conflicts. Switched to ESP32PWM
+//   with explicit attachPin(pin, 50Hz, 14-bit) — 14-bit is the ESP32-S3 max.
+//
+// ⚠ PWM duty cycle is calculated manually:
+//   duty = pulseUs / 20000 * 16383  (16383 = 2^14 - 1)
 //
 // Speed is controlled by setting a target angle — the servo moves toward it
 // at a fixed speed (degrees/sec) instead of jumping instantly.
 //
 // ⚠ call update() every loop() — without it the servo won't move smoothly.
 //
-// Usage:
-//   StandardServo elbow(48);
-//   elbow.begin();
-//   elbow.setSpeed(60);     // 60°/sec
-//   elbow.setAngle(90);     // sets target — servo starts moving
-//   elbow.update();         // call in loop()
+// Pulse range: 500–2500µs = 0–180°
 
 class StandardServo {
 public:
@@ -27,7 +29,7 @@ public:
     int  getAngle() const;                 // current physical angle
 
 private:
-    Servo         _servo;
+    ESP32PWM      _pwm;                   // replaced Servo — direct ESP32 PWM control
     int           _pin;
     float         _currentAngle;          // actual position (float for smooth steps)
     int           _targetAngle;
@@ -36,4 +38,6 @@ private:
 
     static const int MIN_US = 500;
     static const int MAX_US = 2500;
+
+    uint32_t angleToDuty(int pulseUs);    // converts µs to 14-bit duty cycle
 };
