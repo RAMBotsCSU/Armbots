@@ -20,7 +20,7 @@ void ArmController::begin() {
     _wrist.begin();
     delay(100);
     _shoulder.begin();
-    _shoulder.setSpeed(40.0f);          // max speed — 40°/sec
+    _shoulder.setSpeed(60.0f);          // max speed — 60°/sec
     _shoulder.setAcceleration(20.0f);   // ramp rate — lower = softer start/stop
     delay(100);
 
