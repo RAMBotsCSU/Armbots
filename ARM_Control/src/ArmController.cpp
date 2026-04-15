@@ -20,8 +20,9 @@ void ArmController::begin() {
     _wrist.begin();
     delay(100);
     _shoulder.begin();
-    _shoulder.setSpeed(60.0f);          // max speed — 60°/sec
-    _shoulder.setAcceleration(20.0f);   // ramp rate — lower = softer start/stop
+    _shoulder.setSpeed(70.0f);          // max speed — 70°/sec
+    _shoulder.setAcceleration(20.0f);   // ramp rate — lower = softer start/stop 
+    // Possibly add some speed that could be not linear, goes slow to start and speeds up in the middle and slows to the end angle. 
     delay(100);
 
     Serial.println("[Arm] Initialising steppers...");
