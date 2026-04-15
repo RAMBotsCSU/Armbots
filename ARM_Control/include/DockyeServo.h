@@ -23,15 +23,20 @@ public:
     void setAngle(int targetAngle);        // set target — moves at current speed
     void setSpeed(float degreesPerSec);    // how fast to move (default: 90°/sec)
     void update();                         // MUST be called every loop()
-    int  getAngle() const;                 // current physical angle
+    int  getAngle() const; 
+    void setAcceleration(float degsPerSec2);                 // current physical angle
 
 private:
     Servo         _servo;
     int           _pin;
     float         _currentAngle;
     int           _targetAngle;
-    float         _speed;
+    //float         _speed; Adding acceleration control
+    float         _maxSpeed;                 // degrees per second
+    float         _accel;                    // degrees per second²
+    float         _currentSpeed;             // current speed (ramps up/down)
     unsigned long _lastUpdate;
+    
 
     static const int MIN_US = 500;
     static const int MAX_US = 2500/1.7;
