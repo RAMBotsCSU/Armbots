@@ -31,8 +31,7 @@ void StepperMotor::begin() {
     _stepper.setMaxSpeed(STEPPER_MAX_SPEED);
     _stepper.setAcceleration(STEPPER_ACCELERATION);
 
-    Serial.printf("[Stepper step:%d dir:%d] Ready\n",
-                  _stepper.currentPosition(), _stepper.currentPosition());
+    Serial.printf("[Stepper enable:%d] Ready\n", _enablePin);
 }
 
 // ── NEW: move by a target angle in degrees ────────────────────────────────────

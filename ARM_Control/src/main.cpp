@@ -34,19 +34,22 @@ void onWebSocketEvent(AsyncWebSocket *server, AsyncWebSocketClient *client,
             int value    = (spaceIdx > 0) ? msg.substring(spaceIdx + 1).toInt() : 0;
             joint.toLowerCase();
 
-            if      (joint == "elbow")    arm.setElbow(value);
-            else if (joint == "shoulder") arm.setShoulder(value);
-            else if (joint == "wrist")    arm.setWrist(value);
+            if      (joint == "elbow")    arm.setElbow(constrain(value, 0, 180));
+            else if (joint == "shoulder") arm.setShoulder(constrain(value, 0, 180));
+            else if (joint == "wrist")    arm.setWrist(constrain(value, 0, 180));
             else if (joint == "base")         { arm.moveBase(value);             }
             else if (joint == "gripper")      { arm.moveGripper(value);          }
-            else if (joint == "baseangle")    { arm.moveBaseToAngle(value);    }
-            else if (joint == "gripperangle") { arm.moveGripperToAngle(value); }
+            else if (joint == "baseangle")    { arm.moveBaseToAngle((float)value);    }
+            else if (joint == "gripperangle") { arm.moveGripperToAngle((float)value); }
             else if (joint == "ballgrab") { ballGrabRoutine.run(); }
             else if (joint == "home")     {
                 arm.home();
                 ws.textAll("reset");
             }
-            else Serial.println("[WS] Unknown command.");
+            else {
+                Serial.println("[WS] Unknown command.");
+                client->text("error: unknown command");
+            }
             break;
         }
         default:

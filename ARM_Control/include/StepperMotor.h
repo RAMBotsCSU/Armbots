@@ -23,10 +23,10 @@ public:
     void moveTo(long position); // set target position (steps from home)
     void run();                 // MUST be called every loop() — executes steps
     void stop();                // halt immediately
-    long getPosition();   // current position in steps (Removed Const)
-    bool isRunning();     // true if still moving toward target
-    void  moveToAngle(float degrees);   // move to absolute angle
-    float getAngle() ;            // current shaft angle in degrees       
+    long  getPosition(); // current position in steps
+    bool  isRunning();         // true if still moving toward target
+    void  moveToAngle(float degrees); // move to absolute angle
+    float getAngle(); // current shaft angle in degrees
 
 private:
     AccelStepper _stepper;

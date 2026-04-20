@@ -50,7 +50,6 @@ void BallGrabRoutine::waitForArm(float seconds) {
     unsigned long deadline = millis() + (unsigned long)(seconds * 1000.0f);
     while (millis() < deadline) {
         arm_.run();
-        delay(10);
     }
 }
 

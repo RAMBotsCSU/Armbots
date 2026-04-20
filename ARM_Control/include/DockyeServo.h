@@ -9,7 +9,7 @@
 //   for this model and will cause wrong positions.
 //
 // Speed is controlled by setting a target angle — the servo moves toward it
-// at a fixed speed (degrees/sec) instead of jumping instantly.
+// with acceleration/deceleration (trapezoidal profile).
 //
 // ⚠ call update() every loop() — without it the servo won't move smoothly.
 //
@@ -20,23 +20,21 @@ public:
     DockyeServo(int pin);
 
     void begin();
-    void setAngle(int targetAngle);        // set target — moves at current speed
-    void setSpeed(float degreesPerSec);    // how fast to move (default: 90°/sec)
-    void update();                         // MUST be called every loop()
-    int  getAngle() const; 
-    void setAcceleration(float degsPerSec2);                 // current physical angle
+    void setAngle(int targetAngle);          // set target — moves at current speed
+    void setSpeed(float degreesPerSec);      // max speed (default: 90°/sec)
+    void setAcceleration(float degsPerSec2); // ramp rate (default: 45°/sec²)
+    void update();                           // MUST be called every loop()
+    int  getAngle() const;                   // current physical angle
 
 private:
     Servo         _servo;
     int           _pin;
     float         _currentAngle;
     int           _targetAngle;
-    //float         _speed; Adding acceleration control
-    float         _maxSpeed;                 // degrees per second
-    float         _accel;                    // degrees per second²
-    float         _currentSpeed;             // current speed (ramps up/down)
+    float         _maxSpeed;
+    float         _accel;
+    float         _currentSpeed;
     unsigned long _lastUpdate;
-    
 
     static const int MIN_US = 500;
     static const int MAX_US = 2500/1.7;
