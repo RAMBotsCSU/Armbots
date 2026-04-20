@@ -10,6 +10,7 @@
 // ─── Arm ──────────────────────────────────────────────────────────────────────
 ArmController arm;
 BallGrabRoutine ballGrabRoutine(arm);
+bool homing = false;
 
 // ─── Web Server + WebSocket ───────────────────────────────────────────────────
 AsyncWebServer server(80);
@@ -44,7 +45,7 @@ void onWebSocketEvent(AsyncWebSocket *server, AsyncWebSocketClient *client,
             else if (joint == "ballgrab") { ballGrabRoutine.run(); }
             else if (joint == "home")     {
                 arm.home();
-                ws.textAll("reset");
+                homing = true;
             }
             else {
                 Serial.println("[WS] Unknown command.");
@@ -135,4 +136,11 @@ void loop() {
     ws.cleanupClients();
     arm.run();
     handleSerial();
+
+    if (homing && arm.isAtHome()) {
+        arm.restoreNormalSpeeds();
+        ws.textAll("reset");
+        homing = false;
+        Serial.println("[Arm] Home complete — normal speeds restored.");
+    }
 }

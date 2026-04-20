@@ -21,9 +21,10 @@ class ArmController {
 public:
     ArmController();
 
-    void begin();  // initialise all motors
-    void run();    // call every loop() — keeps steppers moving
-    void home();   // return all joints to zero position
+    void begin();        // initialise all motors
+    void run();          // call every loop() — keeps steppers moving
+    void home();         // start gradual home sequence (non-blocking)
+    bool isAtHome();     // true once all joints have physically arrived at home
 
     // ── Servo joints ────────────────────────────────────────────────────────
     void setElbow   (int angle);              // 0–180°
@@ -57,4 +58,6 @@ private:
     StandardServo _wrist;
     StepperMotor  _base;
     StepperMotor  _gripper;
+
+    void restoreNormalSpeeds();
 };

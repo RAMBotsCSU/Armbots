@@ -45,3 +45,6 @@
 // ─── Stepper Motion Settings ─────────────────────────────────────────────────
 #define STEPPER_MAX_SPEED    1000.0f   // steps per second
 #define STEPPER_ACCELERATION  500.0f  // steps per second²
+
+// ─── Homing ───────────────────────────────────────────────────────────────────
+#define HOME_SERVO_SPEED  25.0f  // degrees/sec — slow safe speed used during home sequence

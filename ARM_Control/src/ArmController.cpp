@@ -44,12 +44,30 @@ void ArmController::run() {
 }
 
 void ArmController::home() {
-    Serial.println("[Arm] Homing all joints...");
+    Serial.println("[Arm] Homing all joints (slow)...");
+    _elbow.setSpeed(HOME_SERVO_SPEED);
+    _shoulder.setSpeed(HOME_SERVO_SPEED);
+    _wrist.setSpeed(HOME_SERVO_SPEED);
     _elbow.setAngle(15);
     _shoulder.setAngle(0);
     _wrist.setAngle(22);
     _base.moveTo(0);
     _gripper.moveTo(0);
+}
+
+bool ArmController::isAtHome() {
+    return abs(_elbow.getAngle()    - 15) <= 1 &&
+           abs(_shoulder.getAngle() -  0) <= 1 &&
+           abs(_wrist.getAngle()    - 22) <= 1 &&
+           !_base.isRunning()              &&
+           !_gripper.isRunning();
+}
+
+void ArmController::restoreNormalSpeeds() {
+    _elbow.setSpeed(90.0f);
+    _shoulder.setSpeed(70.0f);
+    _shoulder.setAcceleration(20.0f);
+    _wrist.setSpeed(90.0f);
 }
 
 // ── Servo joints ──────────────────────────────────────────────────────────────
