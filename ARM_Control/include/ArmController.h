@@ -51,6 +51,7 @@ public:
     long getGripperPos();
     float getBaseAngle()   ;   // NEW       
     float getGripperAngle() ;  // NEW
+    void restoreNormalSpeeds();
 
 private:
     StandardServo _elbow;
@@ -58,6 +59,4 @@ private:
     StandardServo _wrist;
     StepperMotor  _base;
     StepperMotor  _gripper;
-
-    void restoreNormalSpeeds();
 };

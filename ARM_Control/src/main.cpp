@@ -4,11 +4,13 @@
 #include <ArduinoOTA.h>
 #include "config.h"
 #include "ArmController.h"
+#include "IKController.h"
 #include "ui.h"
-#include "BallGrabRoutine.h"  
+#include "BallGrabRoutine.h"
 
 // ─── Arm ──────────────────────────────────────────────────────────────────────
 ArmController arm;
+IKController  ik(arm);
 BallGrabRoutine ballGrabRoutine(arm);
 bool homing = false;
 
@@ -42,9 +44,24 @@ void onWebSocketEvent(AsyncWebSocket *server, AsyncWebSocketClient *client,
             else if (joint == "gripper")      { arm.moveGripper(value);          }
             else if (joint == "baseangle")    { arm.moveBaseToAngle((float)value);    }
             else if (joint == "gripperangle") { arm.moveGripperToAngle((float)value); }
+            else if (joint == "ikdelta") {
+                String rest = msg.substring(spaceIdx + 1);
+                int sp2 = rest.indexOf(' ');
+                if (sp2 > 0) {
+                    float dr = rest.substring(0, sp2).toFloat();
+                    float dz = rest.substring(sp2 + 1).toFloat();
+                    ik.applyDelta(dr, dz);
+                    client->text("ikpos " + String((int)ik.getR()) + " " + String((int)ik.getZ()));
+                }
+            }
+            else if (joint == "ikphi") {
+                ik.setPhi((float)value);
+                client->text("ikpos " + String((int)ik.getR()) + " " + String((int)ik.getZ()));
+            }
             else if (joint == "ballgrab") { ballGrabRoutine.run(); }
             else if (joint == "home")     {
                 arm.home();
+                ik.reset();
                 homing = true;
             }
             else {

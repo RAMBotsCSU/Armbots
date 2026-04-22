@@ -1,12 +1,8 @@
-#pragma once
-#include <Arduino.h>
-
-const char INDEX_HTML[] PROGMEM = R"rawliteral(
 <!DOCTYPE html>
 <html>
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>ArmBot Control</title>
+  <title>RamBOTs Control — Preview</title>
   <style>
     *    { box-sizing: border-box; }
     body { font-family: Helvetica; background: #1a1a2e; color: #eee; text-align: center; margin: 0; padding: 16px; }
@@ -71,7 +67,7 @@ const char INDEX_HTML[] PROGMEM = R"rawliteral(
     .joy-axes  { display: flex; justify-content: space-between; width: 160px; margin-top: 8px; }
     .joy-axes span { font-size: 10px; color: #444; }
 
-    /* ── IK tab — vertical slider cards (reuse .joint style) ── */
+    /* ── IK tab — vertical slider cards ── */
     .ik-vjoint { display: flex; flex-direction: column; align-items: center; background: #16213e; border-radius: 12px; padding: 16px 12px; width: 80px; }
     .ik-vjoint label { font-size: 11px; color: #aaa; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
 
@@ -111,9 +107,7 @@ const char INDEX_HTML[] PROGMEM = R"rawliteral(
     <button class="tab"        onclick="showTab('ik',this)">IK Control</button>
   </div>
 
-  <!-- ════════════════════════════════════════════════════════ -->
-  <!--  TAB 1 — Manual                                         -->
-  <!-- ════════════════════════════════════════════════════════ -->
+  <!-- TAB 1 — Manual -->
   <div id="tab-manual" class="tab-content active">
 
     <div class="sliders-row">
@@ -125,7 +119,7 @@ const char INDEX_HTML[] PROGMEM = R"rawliteral(
           <div class="slider-wrap">
             <input id="slider-elbow" type="range" class="vertical" orient="vertical"
                    min="15" max="180" value="15" step="1"
-                   oninput="send('elbow '+this.value);document.getElementById('elbowVal').innerHTML=this.value+'&deg;'">
+                   oninput="document.getElementById('elbowVal').innerHTML=this.value+'&deg;'">
           </div>
           <div class="tick-col"><span>180&deg;</span><span>90&deg;</span><span>15&deg;</span></div>
         </div>
@@ -138,7 +132,7 @@ const char INDEX_HTML[] PROGMEM = R"rawliteral(
           <div class="slider-wrap">
             <input id="slider-shoulder" type="range" class="vertical" orient="vertical"
                    min="0" max="180" value="0" step="1"
-                   oninput="send('shoulder '+this.value);document.getElementById('shoulderVal').innerHTML=this.value+'&deg;'">
+                   oninput="document.getElementById('shoulderVal').innerHTML=this.value+'&deg;'">
           </div>
           <div class="tick-col"><span>180&deg;</span><span>90&deg;</span><span>0&deg;</span></div>
         </div>
@@ -151,7 +145,7 @@ const char INDEX_HTML[] PROGMEM = R"rawliteral(
           <div class="slider-wrap">
             <input id="slider-wrist" type="range" class="vertical" orient="vertical"
                    min="22" max="180" value="22" step="1"
-                   oninput="send('wrist '+this.value);document.getElementById('wristVal').innerHTML=this.value+'&deg;'">
+                   oninput="document.getElementById('wristVal').innerHTML=this.value+'&deg;'">
           </div>
           <div class="tick-col"><span>180&deg;</span><span>90&deg;</span><span>0&deg;</span></div>
         </div>
@@ -165,7 +159,7 @@ const char INDEX_HTML[] PROGMEM = R"rawliteral(
         <label>Base</label>
         <div class="angle" id="baseVal">0&deg;</div>
         <input id="slider-base" type="range" class="horiz" min="-180" max="180" value="0" step="1"
-               oninput="send('baseAngle '+this.value);document.getElementById('baseVal').innerHTML=this.value+'&deg;'">
+               oninput="document.getElementById('baseVal').innerHTML=this.value+'&deg;'">
         <div class="tick-row"><span>-180&deg;</span><span>0&deg;</span><span>180&deg;</span></div>
       </div>
 
@@ -173,19 +167,17 @@ const char INDEX_HTML[] PROGMEM = R"rawliteral(
         <label>Gripper</label>
         <div class="angle" id="gripperVal">0&deg;</div>
         <input id="slider-gripper" type="range" class="horiz" min="0" max="180" value="0" step="1"
-               oninput="send('gripperAngle '+this.value);document.getElementById('gripperVal').innerHTML=this.value+'&deg;'">
+               oninput="document.getElementById('gripperVal').innerHTML=this.value+'&deg;'">
         <div class="tick-row"><span>0&deg;</span><span>90&deg;</span><span>180&deg;</span></div>
       </div>
 
     </div>
 
-    <p><button class="button home-btn" onclick="send('home')">Home All</button></p>
+    <p><button class="button home-btn" onclick="previewHome()">Home All</button></p>
 
   </div>
 
-  <!-- ════════════════════════════════════════════════════════ -->
-  <!--  TAB 2 — IK Control                                     -->
-  <!-- ════════════════════════════════════════════════════════ -->
+  <!-- TAB 2 — IK Control -->
   <div id="tab-ik" class="tab-content">
 
     <div class="ik-layout">
@@ -217,7 +209,7 @@ const char INDEX_HTML[] PROGMEM = R"rawliteral(
             <div class="slider-wrap">
               <input id="ik-slider-base" type="range" class="vertical" orient="vertical"
                      min="-180" max="180" value="0" step="1"
-                     oninput="send('baseAngle '+this.value);document.getElementById('ik-base-val').innerHTML=this.value+'&deg;'">
+                     oninput="document.getElementById('ik-base-val').innerHTML=this.value+'&deg;'">
             </div>
             <div class="tick-col"><span>180&deg;</span><span>0&deg;</span><span>-180&deg;</span></div>
           </div>
@@ -230,7 +222,7 @@ const char INDEX_HTML[] PROGMEM = R"rawliteral(
             <div class="slider-wrap">
               <input id="ik-slider-phi" type="range" class="vertical" orient="vertical"
                      min="-90" max="90" value="0" step="1"
-                     oninput="send('ikphi '+this.value);document.getElementById('ik-phi-val').innerHTML=this.value+'&deg;'">
+                     oninput="document.getElementById('ik-phi-val').innerHTML=this.value+'&deg;'">
             </div>
             <div class="tick-col"><span>90&deg;</span><span>0&deg;</span><span>-90&deg;</span></div>
           </div>
@@ -239,87 +231,82 @@ const char INDEX_HTML[] PROGMEM = R"rawliteral(
       </div>
     </div>
 
-    <p><button class="button home-btn" onclick="send('home')">Home All</button></p>
+    <p><button class="button home-btn" onclick="previewHome()">Home All</button></p>
 
   </div>
 
   <!-- ── Status bar ── -->
-  <div class="status" id="status">Connecting...</div>
+  <div class="status" id="status">Preview mode &mdash; not connected to ESP32</div>
 
   <script>
-    const ws = new WebSocket('ws://' + location.hostname + '/ws');
-    ws.onopen  = () => { statusEl('Connected', true); };
-    ws.onclose = () => { statusEl('Disconnected \u2014 reload to reconnect', false); };
-    ws.onmessage = (e) => {
-      if (e.data === 'reset') {
-        document.getElementById('elbowVal').innerHTML    = '15&deg;';
-        document.getElementById('shoulderVal').innerHTML = '0&deg;';
-        document.getElementById('wristVal').innerHTML    = '22&deg;';
-        document.getElementById('baseVal').innerHTML     = '0&deg;';
-        document.getElementById('gripperVal').innerHTML  = '0&deg;';
-        document.getElementById('slider-elbow').value    = 15;
-        document.getElementById('slider-shoulder').value = 0;
-        document.getElementById('slider-wrist').value    = 22;
-        document.getElementById('slider-base').value     = 0;
-        document.getElementById('slider-gripper').value  = 0;
-        document.getElementById('ik-reach').textContent  = '600';
-        document.getElementById('ik-height').textContent = '200';
-        document.getElementById('ik-base-val').innerHTML = '0&deg;';
-        document.getElementById('ik-phi-val').innerHTML  = '0&deg;';
-        document.getElementById('ik-slider-base').value  = 0;
-        document.getElementById('ik-slider-phi').value   = 0;
-      }
-      if (e.data.startsWith('ikpos ')) {
-        const p = e.data.split(' ');
-        document.getElementById('ik-reach').textContent  = p[1];
-        document.getElementById('ik-height').textContent = p[2];
-      }
-    };
-    function statusEl(msg, ok) {
-      const el = document.getElementById('status');
-      el.textContent = msg;
-      el.className = ok ? 'status connected' : 'status';
-    }
-    let debounceTimer;
-    function send(msg) {
-      clearTimeout(debounceTimer);
-      debounceTimer = setTimeout(() => { if (ws.readyState === 1) ws.send(msg); }, 50);
-    }
-    function sendNow(msg) { if (ws.readyState === 1) ws.send(msg); }
     function showTab(id, el) {
       document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
       document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
       document.getElementById('tab-' + id).classList.add('active');
       el.classList.add('active');
     }
-    const pad = document.getElementById('jpad');
+
+    function previewHome() {
+      document.getElementById('elbowVal').innerHTML    = '15&deg;';
+      document.getElementById('shoulderVal').innerHTML = '0&deg;';
+      document.getElementById('wristVal').innerHTML    = '22&deg;';
+      document.getElementById('baseVal').innerHTML     = '0&deg;';
+      document.getElementById('gripperVal').innerHTML  = '0&deg;';
+      document.getElementById('slider-elbow').value    = 15;
+      document.getElementById('slider-shoulder').value = 0;
+      document.getElementById('slider-wrist').value    = 22;
+      document.getElementById('slider-base').value     = 0;
+      document.getElementById('slider-gripper').value  = 0;
+      document.getElementById('ik-reach').textContent  = '600';
+      document.getElementById('ik-height').textContent = '200';
+      document.getElementById('ik-base-val').innerHTML = '0&deg;';
+      document.getElementById('ik-phi-val').innerHTML  = '0&deg;';
+      document.getElementById('ik-slider-base').value  = 0;
+      document.getElementById('ik-slider-phi').value   = 0;
+    }
+
+    // Virtual Joystick (preview: updates reach/height locally)
+    const pad  = document.getElementById('jpad');
     const knob = document.getElementById('jknob');
     let jActive = false, jx = 0, jz = 0, jTimer = null;
     const STEP = 15;
+
     function jUpdate(e) {
-      const r = pad.getBoundingClientRect();
-      const cx = r.left + r.width / 2, cy = r.top + r.height / 2;
-      const t = e.touches ? e.touches[0] : e;
-      let dx = t.clientX - cx, dy = t.clientY - cy;
+      const r  = pad.getBoundingClientRect();
+      const cx = r.left + r.width  / 2;
+      const cy = r.top  + r.height / 2;
+      const t  = e.touches ? e.touches[0] : e;
+      let dx   = t.clientX - cx;
+      let dy   = t.clientY - cy;
       const maxR = r.width / 2 - 14;
       const dist = Math.min(Math.hypot(dx, dy), maxR);
-      const ang = Math.atan2(dy, dx);
-      dx = Math.cos(ang) * dist; dy = Math.sin(ang) * dist;
-      jx = dx / maxR; jz = -dy / maxR;
+      const ang  = Math.atan2(dy, dx);
+      dx = Math.cos(ang) * dist;
+      dy = Math.sin(ang) * dist;
+      jx =  dx / maxR;
+      jz = -dy / maxR;
       knob.style.transform = 'translate(calc(-50% + ' + dx.toFixed(1) + 'px), calc(-50% + ' + dy.toFixed(1) + 'px))';
     }
+
+    function jSend() {
+      if (Math.abs(jx) < 0.05 && Math.abs(jz) < 0.05) return;
+      const r2 = parseInt(document.getElementById('ik-reach').textContent)  + jx * STEP;
+      const z2 = parseInt(document.getElementById('ik-height').textContent) + jz * STEP;
+      document.getElementById('ik-reach').textContent  = Math.round(Math.max(150, Math.min(900,  r2)));
+      document.getElementById('ik-height').textContent = Math.round(Math.max(-300, Math.min(600, z2)));
+    }
+
     function jStart(e) { e.preventDefault(); jActive = true; jUpdate(e); jTimer = setInterval(jSend, 80); }
     function jMove(e)  { if (!jActive) return; e.preventDefault(); jUpdate(e); }
     function jEnd()    { jActive = false; clearInterval(jTimer); jx = jz = 0; knob.style.transform = 'translate(-50%,-50%)'; }
-    function jSend()   { if (Math.abs(jx) < 0.05 && Math.abs(jz) < 0.05) return; sendNow('ikdelta ' + (jx*STEP).toFixed(1) + ' ' + (jz*STEP).toFixed(1)); }
+
     pad.addEventListener('mousedown',  jStart);
     pad.addEventListener('mousemove',  jMove);
     pad.addEventListener('mouseup',    jEnd);
     pad.addEventListener('mouseleave', jEnd);
-    pad.addEventListener('touchstart', jStart, {passive:false});
-    pad.addEventListener('touchmove',  jMove,  {passive:false});
+    pad.addEventListener('touchstart', jStart, { passive: false });
+    pad.addEventListener('touchmove',  jMove,  { passive: false });
     pad.addEventListener('touchend',   jEnd);
   </script>
 </body>
 </html>
-)rawliteral";
